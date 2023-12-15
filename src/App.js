@@ -2,6 +2,7 @@ import './App.css';
 import React, { useState, useEffect } from 'react';
 import { Client } from 'paho-mqtt';
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
+import { v4 as uuidv4 } from 'uuid';
 
 function MQTTComponent() {
   const [message, setMessage] = useState('');
@@ -12,7 +13,7 @@ function MQTTComponent() {
     const hostname = window.location.hostname;
 
     //const client = new Client(window.location.hostname, 9000, "teleclientId");
-    const client = new Client(hostname, 9001, "teleclientId");
+    const client = new Client(hostname, 9001, uuidv4());
 
     // const client = new Client({
     //   uri: 'ws://lolcahost:9001',
