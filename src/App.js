@@ -7,7 +7,12 @@ function MQTTComponent() {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    const client = new Client(window.location.hostname, 9000, "teleclientId");
+
+    // get the hostname that I'm connected to as a window
+    const hostname = window.location.hostname;
+
+    //const client = new Client(window.location.hostname, 9000, "teleclientId");
+    const client = new Client(hostname, 9001, "teleclientId");
 
     // const client = new Client({
     //   uri: 'ws://lolcahost:9001',
@@ -21,15 +26,15 @@ function MQTTComponent() {
     client.onMessageArrived = (message) => {
       console.log(`Received message on ${message.destinationName}: ${message.payloadString}`);
       setMessage(message.payloadString);
-      setTimeout(() => {
-        window.scrollTo(0, document.documentElement.scrollHeight);
-      },100);
+      // setTimeout(() => {
+      //   window.scrollTo(0, document.documentElement.scrollHeight);
+      // },100);
     };
 
     client.connect({
       onSuccess: () => {
         console.log('Connected to MQTT broker');
-        client.subscribe('your/topic');
+        client.subscribe('teleprompter');
       },
     });
 
@@ -40,10 +45,18 @@ function MQTTComponent() {
     };
   }, []);
 
+  const doubleClick = () => {
+    window.scrollTo(0, document.documentElement.scrollHeight);
+  };
+
   return (
     <div>
       <h2>Received MQTT Message:</h2>
-      <ReactMarkdown>{message}</ReactMarkdown>
+      <h2>&nbsp;</h2>
+      <h2>&nbsp;</h2>
+      <div onDoubleClick={doubleClick}>
+        <ReactMarkdown>{message}</ReactMarkdown>
+      </div>
     </div>
   );
 }
